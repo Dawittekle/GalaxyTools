@@ -1,0 +1,51 @@
+<tool id="gwas_harmoniser" name="GWAS Harmoniser" version="1.0.0">
+    <description>Harmonise GWAS summary statistics</description>
+
+    <command detect_errors="exit_code">
+<![CDATA[
+echo "Running GWAS Harmoniser with arguments:" > command_log.txt
+echo "--input $input" >> command_log.txt
+echo "--genome_build $genome_build" >> command_log.txt
+echo "--threshold $threshold" >> command_log.txt
+echo "--ref_dir $ref_dir" >> command_log.txt
+echo "--repo_url $repo_url" >> command_log.txt
+echo "--local_repo $local_repo" >> command_log.txt
+echo "--output $output" >> command_log.txt
+
+python3 $__tool_directory__/gwas_harmoniser.py \
+    --input "$input" \
+    --genome_build "$genome_build" \
+    --threshold "$threshold" \
+    --ref_dir "$ref_dir" \
+    --repo_url "$repo_url" \
+    --local_repo "$local_repo" \
+    --output "$output"
+]]>
+</command>
+
+
+    <inputs>
+        <param name="input" type="data" format="tabular" label="Input GWAS summary statistics (.tsv)" />
+
+        <param name="genome_build" type="select" label="Genome Build">
+            <option value="37">GRCh37</option>
+            <option value="38">GRCh38</option>
+        </param>
+
+        <param name="threshold" type="float" value="0.99" label="Threshold for palindromic variants" />
+
+        <param name="ref_dir" type="text" value="/data/references" label="Reference directory (absolute path)" />
+
+        <param name="repo_url" type="text" value="https://github.com/EBISPOT/gwas-sumstats-harmoniser.git" label="Harmoniser repository URL" />
+
+        <param name="local_repo" type="text" value="/home/galaxy/harmoniser_repo" label="Local repository path" />
+    </inputs>
+
+    <outputs>
+        <data name="output" format="tabular" label="Harmonised GWAS results" />
+    </outputs>
+
+    <help><![CDATA[
+This tool runs the GWAS Summary Statistics Harmoniser on an input TSV file.
+    ]]></help>
+</tool>

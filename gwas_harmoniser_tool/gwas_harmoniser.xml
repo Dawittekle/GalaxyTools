@@ -1,0 +1,59 @@
+<tool id="gwas_harmoniser" name="GWAS Harmoniser" version="1.0.3">
+  <description>Harmonise GWAS summary statistics using the official EBISPOT pipeline (remote GitHub mode)</description>
+
+  <command detect_errors="exit_code"><![CDATA[
+python3 "$__tool_directory__/gwas_harmoniser.py" \
+  --input "$input" \
+  --genome_build "$genome_build" \
+  --threshold "$threshold" \
+  --ref_dir "$ref_dir" \
+  --repo_url "$repo_url" \
+  --output "$output"
+]]></command>
+
+  <inputs>
+    <param name="input" type="data" format="tabular"
+           label="GWAS Input File (.tsv)"
+           help="Upload your GWAS summary statistics file (tab-separated). Make sure the matching *_meta.yaml file is in the same directory." />
+
+    <param name="genome_build" type="select" label="Genome Build">
+      <option value="38" selected="true">GRCh38</option>
+      <option value="37">GRCh37</option>
+    </param>
+
+    <param name="threshold" type="float" value="0.99"
+           label="Threshold for palindromic variants" />
+
+    <param name="ref_dir" type="text"
+           value="/home/dawit/Documents/Projects/galaxy/tools/gwas_harmoniser_tool/data/references_38"
+           label="Reference directory (absolute path)" 
+           help="Path to reference VCF or Parquet files for the chosen genome build." />
+
+    <param name="repo_url" type="text"
+           value="https://github.com/EBISPOT/gwas-sumstats-harmoniser.git"
+           label="Harmoniser GitHub repository URL"
+           help="The remote pipeline repository URL to run via Nextflow (no local clone needed)." />
+  </inputs>
+
+  <outputs>
+    <data name="output" format="tabular" label="Harmonised GWAS results (.tsv)" />
+  </outputs>
+
+  <help><![CDATA[
+This Galaxy tool wraps the **EBISPOT GWAS Harmoniser** pipeline, fetching it directly from GitHub via Nextflow.
+
+### **Inputs**
+- **GWAS Input File (.tsv)** — summary statistics file.
+- **Metadata YAML** — should have the same name as your input file (e.g., `example_input-meta.yaml`).
+- **Reference Directory** — absolute path to GRCh37/38 reference VCF or Parquet files.
+- **Genome Build** — select GRCh37 or GRCh38.
+
+### **Notes**
+- This version does **not** require a local repository (`--local_repo` removed).
+- Nextflow will automatically download and run the pipeline from GitHub.
+- Example path for metadata:
+
+### **Output**
+A harmonised GWAS summary statistics file (`.tsv`) is produced.
+]]></help>
+</tool>

@@ -1,0 +1,2 @@
+*.psd filter=lfs diff=lfs merge=lfs -text
+test-data/*.tsv filter=lfs diff=lfs merge=lfs -text
